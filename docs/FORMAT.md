@@ -3,6 +3,8 @@
 Treningi są w pliku [`data/workouts.json`](../data/workouts.json), a ruchy w [`data/movements.json`](../data/movements.json).
 Po każdej zmianie: `python3 tools/validate.py`.
 
+Treningi z płatnych programów trzymamy w `data/workouts-private.json` (ten sam format). Plik jest w `.gitignore`, więc nie trafia do publicznego repozytorium. Aplikacja wczytuje go, jeśli istnieje.
+
 ## Trening
 
 ```json
@@ -44,6 +46,9 @@ Po każdej zmianie: `python3 tools/validate.py`.
 | `focus` | `full` całe ciało, `engine` kondycja, `strength` siła, `gymnastics` gimnastyka, `legs` nogi, `upper` góra |
 | `equipment` | sprzęt **wymagany** – trening pokaże się tylko, gdy użytkownik go ma (lista w `movements.json`) |
 | `items` | `mv` = id ruchu z biblioteki; ilość jako `reps`, `cal`, `m` albo `sec`; `load` = obciążenie M/K |
+| `equipment` z `\|` | zamienniki, np. `"rower\|skierg\|bike"` = wystarczy jedna z maszyn |
+| `parts[].kind` | `warmup`, `strength`, `gymnastics`, `wod`, `accessory`, `comp` (Comp+ dla zaawansowanych) |
+| `items[].h` | śródtytuł w części, np. `{"h": "Min 0–12"}` |
 | `rounds`, `scheme`, `notes` | opcjonalne |
 
 Ruch spoza biblioteki można wpisać przez `text`, ale lepiej dodać go do `movements.json` – wtedy generator też może go używać.

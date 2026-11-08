@@ -11,6 +11,9 @@ FOCUS = {"full", "engine", "strength", "gymnastics", "legs", "upper"}
 
 mv_data = json.loads((ROOT / "data/movements.json").read_text())
 wk_data = json.loads((ROOT / "data/workouts.json").read_text())
+_priv = ROOT / "data/workouts-private.json"
+if _priv.exists():
+    wk_data["workouts"] += json.loads(_priv.read_text())["workouts"]
 moves = {m["id"]: m for m in mv_data["movements"]}
 equipment = set(mv_data["equipment"])
 errors = []
@@ -40,9 +43,10 @@ for w in wk_data["workouts"]:
     for f in w.get("focus", []):
         if f not in FOCUS:
             err(f"fokus {f} spoza {sorted(FOCUS)}")
-    for e in w.get("equipment", []):
-        if e not in equipment:
-            err(f"nieznany sprzęt {e}")
+    for alt in w.get("equipment", []):
+        for e in alt.split("|"):
+            if e not in equipment:
+                err(f"nieznany sprzęt {e}")
     used_eq = set()
     for p in w.get("parts", []):
         for it in p.get("items", []):
@@ -50,10 +54,10 @@ for w in wk_data["workouts"]:
                 m = moves.get(it["mv"])
                 if not m:
                     err(f"nieznany ruch {it['mv']} (dodaj do movements.json albo użyj pola text)")
-                elif m["eq"] and not set(m["eq"]) & set(w.get("equipment", [])):
+                elif m["eq"] and not set(m["eq"]) & {x for a in w.get("equipment", []) for x in a.split("|")}:
                     err(f"ruch {it['mv']} wymaga jednego z {m['eq']}, a nie ma go w equipment")
-            elif "text" not in it:
-                err("pozycja bez mv i bez text")
+            elif "text" not in it and "h" not in it:
+                err("pozycja bez mv, text ani h")
 
 print(f"Ruchy: {len(moves)}, treningi: {len(wk_data['workouts'])}")
 if errors:

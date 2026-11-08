@@ -261,7 +261,8 @@ export function match(workouts, c) {
   const level = Number(c.level);
   const dur = Number(c.duration);
   return workouts.map((w) => {
-    if (!w.equipment.every((e) => c.equipment.includes(e))) return null;
+    // Pozycja sprzętu może mieć zamienniki: "rower|skierg|bike" = wystarczy jeden z nich.
+    if (!w.equipment.every((e) => e.split('|').some((x) => c.equipment.includes(x)))) return null;
     if (c.style !== 'any' && w.style !== c.style) return null;
     let score = 0;
     const reasons = [];

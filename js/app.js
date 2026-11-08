@@ -35,15 +35,20 @@ function itemText(it) {
   const name = it.mv ? (movement(it.mv)?.name ?? it.mv) : it.text;
   return [qty(it), name].filter(Boolean).join(' ') + (it.load ? ` (${it.load})` : '') + (it.note ? ` – ${it.note}` : '');
 }
-const metaLine = (w) => [STYLES[w.style], FORMATS[w.format] ?? w.format, `${w.duration_min} min`, LEVELS[w.level]].filter(Boolean).join(' · ');
+const KINDS = { warmup: 'Rozgrzewka', strength: 'Siła', gymnastics: 'Gimnastyka', wod: 'WOD', accessory: 'Akcesoria', comp: 'Comp+ (dla zaawansowanych)' };
+const metaLine = (w) => [STYLES[w.style], FORMATS[w.format] ?? w.format, `${w.duration_min} min`, LEVELS[w.level], (w.tags || []).includes('pary') ? 'w parach' : '']
+  .filter(Boolean).join(' · ');
+// Części główne (WOD) – do podglądu na karcie.
+const mainParts = (w) => (w.parts.some((p) => p.kind === 'wod') ? w.parts.filter((p) => p.kind === 'wod') : w.parts);
+const eqName = (e, names) => e.split('|').map((x) => names[x] ?? x).join(' lub ');
 
 export function toText(w) {
   const lines = [`${w.name}`, metaLine(w)];
   if (w.description) lines.push(w.description);
   for (const p of w.parts) {
-    lines.push('', p.title + (p.scheme && !p.title.includes(p.scheme) ? ` (${p.scheme})` : ''));
+    lines.push('', (p.kind ? `${KINDS[p.kind] ?? p.kind}: ` : '') + p.title + (p.scheme && !p.title.includes(p.scheme) ? ` (${p.scheme})` : ''));
     if (p.notes) lines.push(p.notes);
-    p.items.forEach((it) => lines.push(`• ${itemText(it)}`));
+    p.items.forEach((it) => lines.push(it.h ? it.h : `• ${itemText(it)}`));
   }
   if (w.scaling) lines.push('', `Skalowanie: ${w.scaling}`);
   return lines.join('\n');
@@ -58,7 +63,7 @@ function chips(name, options, value, multi = false) {
 }
 
 function card(w, extra = '') {
-  const items = w.parts.flatMap((p) => p.items).slice(0, 4).map((it) => esc(movement(it.mv)?.name ?? it.text)).join(', ');
+  const items = mainParts(w).flatMap((p) => p.items).filter((it) => !it.h).slice(0, 4).map((it) => esc(movement(it.mv)?.name ?? it.text)).join(', ');
   return `<button class="card" data-open="${esc(w.id)}">
     <div class="card-top"><strong>${esc(w.name)}</strong>${extra}</div>
     <div class="meta">${esc(metaLine(w))}</div>
@@ -114,13 +119,14 @@ function viewDetail(w) {
     <div class="meta">${esc(metaLine(w))}${w.source ? ` · <i>${esc(w.source)}</i>` : ''}</div>
     ${w.description ? `<p>${esc(w.description)}</p>` : ''}
     ${w.parts.map((p) => `<div class="part">
+      ${p.kind ? `<div class="kind kind-${esc(p.kind)}">${esc(KINDS[p.kind] ?? p.kind)}</div>` : ''}
       <h3>${esc(p.title)}</h3>
       ${p.scheme && !p.title.includes(p.scheme) ? `<div class="meta">${esc(p.scheme)}</div>` : ''}
       ${p.notes ? `<p class="notes">${esc(p.notes)}</p>` : ''}
-      <ul>${p.items.map((it) => `<li>${esc(itemText(it))}</li>`).join('')}</ul>
+      <ul>${p.items.map((it) => (it.h ? `<li class="h">${esc(it.h)}</li>` : `<li>${esc(itemText(it))}</li>`)).join('')}</ul>
     </div>`).join('')}
     ${w.scaling ? `<p class="notes"><b>Skalowanie:</b> ${esc(w.scaling)}</p>` : ''}
-    ${w.equipment?.length ? `<p class="meta">Sprzęt: ${esc(w.equipment.map((e) => state.equipmentNames[e] ?? e).join(', '))}</p>` : ''}
+    ${w.equipment?.length ? `<p class="meta">Sprzęt: ${esc(w.equipment.map((e) => eqName(e, state.equipmentNames)).join(', '))}</p>` : ''}
   </div>`;
 }
 
@@ -217,10 +223,14 @@ document.addEventListener('input', (e) => {
 async function init() {
   // Wersja jednoplikowa (podgląd) ma dane wbudowane w window.TRENING_DATA.
   const load = (path) => window.TRENING_DATA?.[path] ?? fetch(path).then((r) => r.json());
-  const [mv, wk] = await Promise.all([load('data/movements.json'), load('data/workouts.json')]);
+  // workouts-private.json: treningi z płatnych programów, trzymane poza publicznym repo (może go nie być).
+  const [mv, wk, priv] = await Promise.all([
+    load('data/movements.json'), load('data/workouts.json'),
+    Promise.resolve(load('data/workouts-private.json')).catch(() => ({ workouts: [] })),
+  ]);
   setMovements(mv.movements);
   state.equipmentNames = mv.equipment;
-  state.workouts = wk.workouts;
+  state.workouts = [...(priv?.workouts || []), ...wk.workouts];
   render();
 }
 
