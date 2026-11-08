@@ -1,7 +1,7 @@
 // Service worker: aplikacja działa bez internetu.
 // Pliki aplikacji: najpierw z pamięci. Dane (data/*.json): najpierw z sieci, żeby nowe treningi trafiały od razu.
 // Po zmianie plików aplikacji podbij numer wersji.
-const CACHE = 'trening-io-v1';
+const CACHE = 'trening-io-v2';
 const ASSETS = [
   './', 'index.html', 'manifest.webmanifest', 'css/styles.css',
   'js/app.js', 'js/generator.js', 'data/movements.json', 'data/workouts.json',

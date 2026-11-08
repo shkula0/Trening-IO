@@ -145,11 +145,10 @@ function run() {
 
 async function share(w) {
   const text = toText(w);
-  try {
-    if (navigator.share) { await navigator.share({ title: w.name, text }); return; }
-    await navigator.clipboard.writeText(text);
-    toast('Skopiowano do schowka');
-  } catch { /* anulowane */ }
+  if (navigator.share) {
+    try { await navigator.share({ title: w.name, text }); return; } catch (err) { if (err.name === 'AbortError') return; }
+  }
+  try { await navigator.clipboard.writeText(text); toast('Skopiowano do schowka'); } catch { toast('Nie udało się skopiować'); }
 }
 
 function toast(msg) {
@@ -216,10 +215,9 @@ document.addEventListener('input', (e) => {
 
 // ---------- Start ----------
 async function init() {
-  const [mv, wk] = await Promise.all([
-    fetch('data/movements.json').then((r) => r.json()),
-    fetch('data/workouts.json').then((r) => r.json()),
-  ]);
+  // Wersja jednoplikowa (podgląd) ma dane wbudowane w window.TRENING_DATA.
+  const load = (path) => window.TRENING_DATA?.[path] ?? fetch(path).then((r) => r.json());
+  const [mv, wk] = await Promise.all([load('data/movements.json'), load('data/workouts.json')]);
   setMovements(mv.movements);
   state.equipmentNames = mv.equipment;
   state.workouts = wk.workouts;
@@ -228,4 +226,4 @@ async function init() {
 
 init().catch((err) => { $('#main').innerHTML = `<p class="empty">Nie udało się wczytać danych: ${esc(err.message)}</p>`; });
 
-if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js');
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
