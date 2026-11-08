@@ -1,0 +1,286 @@
+{
+  "_opis": "Baza treningów. Format opisany w docs/FORMAT.md. Wpisy z source 'przykład startowy' to przykłady do podmiany na Twoje treningi.",
+  "workouts": [
+    {
+      "id": "start-001",
+      "name": "Trójka na start",
+      "source": "przykład startowy",
+      "style": "crossfit",
+      "format": "amrap",
+      "duration_min": 12,
+      "level": 1,
+      "focus": ["full", "engine"],
+      "equipment": ["kettlebell", "box"],
+      "description": "Krótki, równy AMRAP – dobry na pierwszy trening z nową osobą.",
+      "parts": [
+        {
+          "title": "AMRAP 12 min",
+          "format": "amrap",
+          "minutes": 12,
+          "items": [
+            { "mv": "kb_swing", "reps": 15, "load": "16/12 kg" },
+            { "mv": "box_step", "reps": 12, "load": "50/40 cm" },
+            { "mv": "pushup", "reps": 10 }
+          ]
+        }
+      ],
+      "scaling": "Pompki z kolan albo na skrzyni.",
+      "tags": ["wprowadzenie"]
+    },
+    {
+      "id": "start-002",
+      "name": "Schody 21-15-9",
+      "source": "przykład startowy",
+      "style": "crossfit",
+      "format": "for_time",
+      "duration_min": 10,
+      "level": 2,
+      "focus": ["engine", "legs"],
+      "equipment": ["barbell", "pullup_bar"],
+      "description": "Szybki couplet – mocne tempo od pierwszej rundy.",
+      "parts": [
+        {
+          "title": "21-15-9 na czas",
+          "format": "for_time",
+          "scheme": "21-15-9",
+          "minutes": 10,
+          "items": [
+            { "mv": "thruster", "load": "43/30 kg" },
+            { "mv": "pullup" }
+          ]
+        }
+      ],
+      "scaling": "Podciąganie z gumą albo wiosłowanie na kółkach.",
+      "tags": ["couplet", "krótki"]
+    },
+    {
+      "id": "start-003",
+      "name": "EMOM czterech stacji",
+      "source": "przykład startowy",
+      "style": "crossfit",
+      "format": "emom",
+      "duration_min": 20,
+      "level": 2,
+      "focus": ["engine", "full"],
+      "equipment": ["rower", "wallball", "kettlebell"],
+      "description": "Co minutę kolejna stacja, 5 rund.",
+      "parts": [
+        {
+          "title": "EMOM 20 min",
+          "format": "emom",
+          "minutes": 20,
+          "items": [
+            { "mv": "row", "cal": "14/11" },
+            { "mv": "wall_ball", "reps": 15, "load": "9/6 kg" },
+            { "mv": "kb_swing", "reps": 15, "load": "24/16 kg" },
+            { "mv": "burpee", "reps": 10 }
+          ]
+        }
+      ],
+      "scaling": "Zostaw min. 10–15 s odpoczynku w każdej minucie – jeśli nie, zmniejsz liczbę powtórzeń.",
+      "tags": []
+    },
+    {
+      "id": "start-004",
+      "name": "Długi chipper",
+      "source": "przykład startowy",
+      "style": "crossfit",
+      "format": "chipper",
+      "duration_min": 30,
+      "level": 2,
+      "focus": ["engine", "full"],
+      "equipment": ["rower", "box", "kettlebell", "wallball", "pullup_bar"],
+      "description": "Jedna lista od góry do dołu – nie wracasz.",
+      "parts": [
+        {
+          "title": "Na czas (limit 30 min)",
+          "format": "for_time",
+          "minutes": 30,
+          "items": [
+            { "mv": "row", "cal": "50/40" },
+            { "mv": "box_jump", "reps": 40, "load": "60/50 cm" },
+            { "mv": "kb_swing", "reps": 30, "load": "24/16 kg" },
+            { "mv": "wall_ball", "reps": 30, "load": "9/6 kg" },
+            { "mv": "t2b", "reps": 20 },
+            { "mv": "burpee", "reps": 10 }
+          ]
+        }
+      ],
+      "scaling": "Toes to bar → unoszenie kolan; box jump → step-over.",
+      "tags": ["chipper"]
+    },
+    {
+      "id": "start-005",
+      "name": "Siła + krótki metcon",
+      "source": "przykład startowy",
+      "style": "hybrid",
+      "format": "strength",
+      "duration_min": 40,
+      "level": 2,
+      "focus": ["strength", "legs"],
+      "equipment": ["barbell", "rope"],
+      "description": "Najpierw ciężko, potem szybko.",
+      "parts": [
+        {
+          "title": "A. Front squat 5×5",
+          "format": "strength",
+          "minutes": 20,
+          "notes": "Narastająco do ciężkiej piątki, przerwa 2–3 min.",
+          "items": [{ "mv": "front_squat", "reps": 5 }]
+        },
+        {
+          "title": "B. AMRAP 10 min",
+          "format": "amrap",
+          "minutes": 10,
+          "items": [
+            { "mv": "deadlift", "reps": 8, "load": "100/70 kg" },
+            { "mv": "su", "reps": 60 },
+            { "mv": "pushup", "reps": 12 }
+          ]
+        }
+      ],
+      "scaling": "",
+      "tags": []
+    },
+    {
+      "id": "start-006",
+      "name": "Bez sprzętu – interwały",
+      "source": "przykład startowy",
+      "style": "crossfit",
+      "format": "intervals",
+      "duration_min": 20,
+      "level": 1,
+      "focus": ["engine", "full"],
+      "equipment": [],
+      "description": "Trening do zrobienia wszędzie: w domu, w parku, w hotelu.",
+      "parts": [
+        {
+          "title": "5 × (3 min pracy / 1 min przerwy)",
+          "format": "intervals",
+          "rounds": 5,
+          "minutes": 20,
+          "notes": "W każdym okienku AMRAP poniższej rundy. Wynik: suma rund.",
+          "items": [
+            { "mv": "air_squat", "reps": 15 },
+            { "mv": "pushup", "reps": 10 },
+            { "mv": "situp", "reps": 10 },
+            { "mv": "burpee", "reps": 5 }
+          ]
+        }
+      ],
+      "scaling": "",
+      "tags": ["bez sprzętu", "dom"]
+    },
+    {
+      "id": "start-007",
+      "name": "Mini symulacja Hyrox",
+      "source": "przykład startowy",
+      "style": "hyrox",
+      "format": "for_time",
+      "duration_min": 45,
+      "level": 2,
+      "focus": ["engine", "legs"],
+      "equipment": ["run", "skierg", "sled", "rower", "kettlebell", "sandbag", "wallball"],
+      "description": "Połowa dystansów zawodów: 8 × (500 m biegu + stacja).",
+      "parts": [
+        {
+          "title": "8 rund na czas",
+          "format": "for_time",
+          "minutes": 45,
+          "notes": "Każda runda: 500 m biegu, potem stacja.",
+          "items": [
+            { "mv": "ski", "m": 500 },
+            { "mv": "sled_push", "m": 25 },
+            { "mv": "sled_pull", "m": 25 },
+            { "mv": "bbj", "m": 40 },
+            { "mv": "row", "m": 500 },
+            { "mv": "farmers", "m": 100, "load": "2×24/16 kg" },
+            { "mv": "sandbag_lunge", "m": 50, "load": "20/10 kg" },
+            { "mv": "wall_ball", "reps": 50, "load": "6/4 kg" }
+          ]
+        }
+      ],
+      "scaling": "Brak sań → 20 m wykroków z hantlami na stację.",
+      "tags": ["symulacja"]
+    },
+    {
+      "id": "start-008",
+      "name": "Bieg pod zmęczeniem",
+      "source": "przykład startowy",
+      "style": "hyrox",
+      "format": "intervals",
+      "duration_min": 30,
+      "level": 2,
+      "focus": ["engine", "legs"],
+      "equipment": ["run", "wallball", "sandbag"],
+      "description": "Uczy biegu na zmęczonych nogach – kluczowa rzecz w Hyrox.",
+      "parts": [
+        {
+          "title": "5 rund, 1 min przerwy między rundami",
+          "format": "intervals",
+          "rounds": 5,
+          "minutes": 30,
+          "items": [
+            { "mv": "run", "m": 600 },
+            { "mv": "wall_ball", "reps": 20, "load": "6/4 kg" },
+            { "mv": "sandbag_lunge", "m": 30, "load": "20/10 kg" }
+          ]
+        }
+      ],
+      "scaling": "",
+      "tags": ["compromised running"]
+    },
+    {
+      "id": "start-009",
+      "name": "Gimnastyka EMOM",
+      "source": "przykład startowy",
+      "style": "crossfit",
+      "format": "emom",
+      "duration_min": 15,
+      "level": 3,
+      "focus": ["gymnastics", "upper"],
+      "equipment": ["pullup_bar"],
+      "description": "Jakość ruchu pod zmęczeniem.",
+      "parts": [
+        {
+          "title": "EMOM 15 min",
+          "format": "emom",
+          "minutes": 15,
+          "items": [
+            { "mv": "c2b", "reps": 8 },
+            { "mv": "hspu", "reps": 8 },
+            { "mv": "t2b", "reps": 12 }
+          ]
+        }
+      ],
+      "scaling": "",
+      "tags": []
+    },
+    {
+      "id": "start-010",
+      "name": "Para na wiośle i hantlach",
+      "source": "przykład startowy",
+      "style": "hybrid",
+      "format": "amrap",
+      "duration_min": 20,
+      "level": 1,
+      "focus": ["full", "engine"],
+      "equipment": ["rower", "dumbbell"],
+      "description": "W parach: jedna osoba wiosłuje, druga robi rundę hantli – zmiana po skończeniu rundy.",
+      "parts": [
+        {
+          "title": "AMRAP 20 min w parach",
+          "format": "amrap",
+          "minutes": 20,
+          "items": [
+            { "mv": "row", "cal": "12/9" },
+            { "mv": "db_snatch", "reps": 10, "load": "15/10 kg" },
+            { "mv": "db_lunge", "reps": 10, "load": "2×10/7,5 kg" }
+          ]
+        }
+      ],
+      "scaling": "",
+      "tags": ["pary"]
+    }
+  ]
+}
